@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
 
 class App extends Component {
+  componentDidMount() {
+
+    axios.get('/api/v1/todos?contentFilter=blah&page=0&size=10')
+      .then(function (response) {
+        // handle success
+        console.log(response);
+      })
+  }
+
   render() {
     return (
       <div className="App">
