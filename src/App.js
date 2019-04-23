@@ -1,31 +1,17 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import axios from 'axios';
+import {BrowserRouter, Route} from "react-router-dom";
+import TodoContainer from "./container/TodoContainer";
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
-class App extends Component {
-  componentDidMount() {
-
-    axios.get('/api/v1/todos?contentFilter=blah&page=0&size=10')
-      .then(function (response) {
-        // handle success
-        console.log(response);
-      })
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+function App() {
+  return (
+    <BrowserRouter>
+        <Route path="/" exact component={TodoContainer} />
+        {/*<Route path="/about/" component={About} />*/}
+        {/*<Route path="/users/" component={Users} />*/}
+    </BrowserRouter>
+  );
 }
 
 export default App;
