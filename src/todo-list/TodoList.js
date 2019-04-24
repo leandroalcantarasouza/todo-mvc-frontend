@@ -5,7 +5,7 @@ import './TodoList.css';
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import {Link, Route} from "react-router-dom";
-import NewTodo from "../new-todo/NewTodo";
+import NewTodoComponent from "../new-todo/NewTodoComponent";
 import Row from "react-bootstrap/Row";
 
 
@@ -50,7 +50,7 @@ class TodoList extends Component {
           }
         </ul>
 
-        <Route path={`${this.match.url}/new-todo`} component={NewTodo}/>
+        <Route path={`${this.match.url}/new-todo`} component={NewTodoComponent}/>
       </div>
     );
   }
