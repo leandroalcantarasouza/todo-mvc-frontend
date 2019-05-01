@@ -7,6 +7,7 @@ import Col from "react-bootstrap/Col";
 import {Link, Route} from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import NewTodoComponent from "../new-todo/NewTodoComponent";
+import EditTodoComponent from "../edit-todo/EditTodoComponent";
 
 
 class TodoList extends Component {
@@ -34,6 +35,9 @@ class TodoList extends Component {
           <Col xs={12}>
             <Link to={{pathname:`${this.match.url}/new-todo`}}><i className={"fas fa-plus-circle fa-lg"}/></Link>
           </Col>
+          <Col xs={12}>
+            <Link to={{pathname:`${this.match.url}/edit-todo`}}><i className={"fas fa-plus-circle fa-lg"}/>Edit Todo</Link>
+          </Col>
         </Row>
         <ul className={"cardCollection"}>
           {this.state.returnedTodo.map((todo, index) => {
@@ -51,6 +55,7 @@ class TodoList extends Component {
         </ul>
 
         <Route path={`${this.match.url}/new-todo`} component={NewTodoComponent}/>
+        <Route path={`${this.match.url}/edit-todo`} component={EditTodoComponent}/>
       </div>
     );
   }
