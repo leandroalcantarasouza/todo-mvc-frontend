@@ -13,7 +13,7 @@ class NewTodoComponent extends React.Component {
 
   render() {
     return (
-      <FormTodoComponent label={"New Todo"} todoDto={new TodoDTO()} onActionTodo={this.saveTodo} onExitTodo={this.exitTodo}/>
+      <FormTodoComponent label={"New Todo"} todoDto={new TodoDTO()} onFormSubmit={this.saveTodo} onClose={this.exitTodo}/>
     );
   }
 

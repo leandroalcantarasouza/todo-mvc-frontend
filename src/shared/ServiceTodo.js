@@ -8,8 +8,12 @@ class ServiceTodo {
     })
   };
 
-  findTodo(idTodo) {
+  findTodoById(idTodo) {
     return createAxiosRequest().get(`/todos/${idTodo}`);
+  };
+
+  deleteTodoById(idTodo) {
+    return createAxiosRequest().delete(`/todos/${idTodo}`);
   };
 
   updateTodo(idTodo, todo) {

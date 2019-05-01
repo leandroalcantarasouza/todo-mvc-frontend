@@ -7,22 +7,22 @@ import Container from "react-bootstrap/Container";
 
 class FormTodoComponent extends Component {
 
-  constructor({label, todoDto, onActionTodo, onExitTodo}) {
-    super(label, todoDto, onActionTodo);
+  constructor({label, todoDto, onFormSubmit, onClose}) {
+    super(label, todoDto, onFormSubmit, onClose);
     this.label = label;
     this.todoDto = todoDto;
-    this._onActionTodo = onActionTodo;
-    this._onExitTodo = onExitTodo;
-    this.createTodo = this.createTodo.bind(this);
+    this._onFormSubmit = onFormSubmit;
+    this._onClose = onClose;
+    this.submitTodo = this.submitTodo.bind(this);
     this.onchangeTodo = this.onchangeTodo.bind(this);
     this.state = {todo: this.todoDto, disabled: true, validated: false};
   };
 
-  createTodo(event) {
+  submitTodo(event) {
     event.preventDefault();
     event.stopPropagation();
     if(this.state.todo && this.state.todo.content.trim() !== "") {
-      this._onActionTodo(this.todoDto);
+      this._onFormSubmit(this.todoDto);
     } else {
       this.setState({validated: true});
     }
@@ -44,7 +44,7 @@ class FormTodoComponent extends Component {
     if(e) {
       e.preventDefault();
     }
-    this._onExitTodo();
+    this._onClose();
   };
 
   disableSubmitOnEmptyForm = (event) => {
@@ -67,7 +67,7 @@ class FormTodoComponent extends Component {
             <Modal.Title className={"font-weight-light text-capitalize"} style={{color:"#fff"}}>{label}</Modal.Title>
           </Modal.Header>
           <Form onKeyPress={this.disableSubmitOnEmptyForm}
-                onSubmit={this.createTodo}
+                onSubmit={this.submitTodo}
                 noValidate
                 validated={this.state.validated}>
             <Modal.Body>

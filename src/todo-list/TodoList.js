@@ -8,6 +8,7 @@ import {Link, Route} from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import NewTodoComponent from "../new-todo/NewTodoComponent";
 import EditTodoComponent from "../edit-todo/EditTodoComponent";
+import DeleteTodoComponent from "../delete-todo/DelTodoComponent";
 
 
 class TodoList extends Component {
@@ -36,7 +37,10 @@ class TodoList extends Component {
             <Link to={{pathname:`${this.match.url}/new-todo`}}><i className={"fas fa-plus-circle fa-lg"}/></Link>
           </Col>
           <Col xs={12}>
-            <Link to={{pathname:`${this.match.url}/edit-todo`}}><i className={"fas fa-plus-circle fa-lg"}/>Edit Todo</Link>
+            <Link to={{pathname:`${this.match.url}/edit-todo/5cc9fd2f7c714c329f7aa5ad`}}><i className={"fas fa-plus-circle fa-lg"}/>Edit Todo</Link>
+          </Col>
+          <Col xs={12}>
+            <Link to={{pathname:`${this.match.url}/delete-todo/5cc9fd2f7c714c329f7aa5ad`}}><i className={"fas fa-plus-circle fa-lg"}/>Delete Todo</Link>
           </Col>
         </Row>
         <ul className={"cardCollection"}>
@@ -55,7 +59,8 @@ class TodoList extends Component {
         </ul>
 
         <Route path={`${this.match.url}/new-todo`} component={NewTodoComponent}/>
-        <Route path={`${this.match.url}/edit-todo`} component={EditTodoComponent}/>
+        <Route path={`${this.match.url}/edit-todo/:idTodo`} component={EditTodoComponent}/>
+        <Route path={`${this.match.url}/delete-todo/:idTodo`} component={DeleteTodoComponent}/>
       </div>
     );
   }
