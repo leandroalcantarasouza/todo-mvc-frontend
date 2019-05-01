@@ -15,14 +15,17 @@ class NewTodoComponent extends Component {
     this.createTodo = this.createTodo.bind(this);
     this.onchangeTodo = this.onchangeTodo.bind(this);
     this.todoDto = new TodoDTO();
-    this.state = {todo: this.todoDto, disabled: true};
+    this.state = {todo: this.todoDto, disabled: true, validated: false};
   };
 
   createTodo(event) {
     event.preventDefault();
+    event.stopPropagation();
     if(this.state.todo && this.state.todo.content.trim() !== "") {
       let serviceTodo = new ServiceTodo();
-      serviceTodo.createTodo(this.state.todo).then((response) => this.back());
+      serviceTodo.createTodo(this.state.todo).then(() => this.back());
+    } else {
+      this.setState({validated: true});
     }
   };
 
@@ -62,13 +65,17 @@ class NewTodoComponent extends Component {
           <Modal.Header className={"bg-info"}>
             <Modal.Title className={"font-weight-light text-capitalize"} style={{color:"#fff"}}>New Todo</Modal.Title>
           </Modal.Header>
-          <Form onKeyPress={this.disableSubmitOnEmptyForm} onSubmit={this.createTodo}>
+          <Form onKeyPress={this.disableSubmitOnEmptyForm}
+                onSubmit={this.createTodo}
+                noValidate
+                validated={this.state.validated}>
             <Modal.Body>
-                <Row>
-                  <Col>
-                    <Form.Control placeholder="Content" type="text" value={this.state.todo.content} onChange={this.onchangeTodo}/>
-                  </Col>
-                </Row>
+                <Form.Row>
+                  <Form.Group as={Col} md="12">
+                    <Form.Control required placeholder="Content" type="text" value={this.state.todo.content} onChange={this.onchangeTodo}/>
+                    <Form.Control.Feedback type="invalid">A content must be inserted</Form.Control.Feedback>
+                  </Form.Group>
+                </Form.Row>
             </Modal.Body>
             <Modal.Footer style={{justifyContent: "flex-start"}}>
               <Row>
