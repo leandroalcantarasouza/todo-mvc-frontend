@@ -5,8 +5,8 @@ import './TodoList.css';
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import {Link, Route} from "react-router-dom";
-import NewTodoComponent from "../new-todo/NewTodoComponent";
 import Row from "react-bootstrap/Row";
+import NewTodoComponent from "../new-todo/NewTodoComponent";
 
 
 class TodoList extends Component {
