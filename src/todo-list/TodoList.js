@@ -33,6 +33,10 @@ class TodoList extends Component {
     this.findByFilter();
   };
 
+  componentWillReceiveProps(nextProps) {
+    this.findByFilter();
+  };
+
   findByFilter = () => {
     this.serviceTodo.findTodos(this.state.filterQuery, this.page, this.size)
       .then((response) => this.setState({
