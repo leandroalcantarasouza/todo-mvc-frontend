@@ -9,6 +9,7 @@ import Row from "react-bootstrap/Row";
 import NewTodoComponent from "../new-todo/NewTodoComponent";
 import EditTodoComponent from "../edit-todo/EditTodoComponent";
 import DeleteTodoComponent from "../delete-todo/DelTodoComponent";
+import Moment from "react-moment";
 
 
 class TodoList extends Component {
@@ -36,21 +37,34 @@ class TodoList extends Component {
           <Col xs={12}>
             <Link to={{pathname:`${this.match.url}/new-todo`}}><i className={"fas fa-plus-circle fa-lg"}/></Link>
           </Col>
-          <Col xs={12}>
-            <Link to={{pathname:`${this.match.url}/edit-todo/5cc9fd2f7c714c329f7aa5ad`}}><i className={"fas fa-plus-circle fa-lg"}/>Edit Todo</Link>
-          </Col>
-          <Col xs={12}>
-            <Link to={{pathname:`${this.match.url}/delete-todo/5cc9fd2f7c714c329f7aa5ad`}}><i className={"fas fa-plus-circle fa-lg"}/>Delete Todo</Link>
-          </Col>
         </Row>
         <ul className={"cardCollection"}>
           {this.state.returnedTodo.map((todo, index) => {
             return <li key={index}>
               <Card bg="info" text="white" style={{width: '18rem'}}>
                 <Card.Body>
-                  <Card.Text style={{align: "center"}}>
-                    {todo.content}
-                  </Card.Text>
+                  <Row>
+                    <Col>
+                      <Card.Text style={{align: "center"}}>
+                        {todo.content}
+                      </Card.Text>
+                    </Col>
+                    <Col>
+                      <Card.Text>
+                        <Moment format="DD/MM/YYYY">{todo.lastUpdateDate}</Moment>
+                      </Card.Text>
+                    </Col>
+                  </Row>
+                  <Card.Footer className={"bg-none"}>
+                    <Row>
+                      <Col xs={6}>
+                        <Link to={{pathname:`${this.match.url}/edit-todo/${todo.id}`}}><i className={"fas fa-pen fa-lg"}/></Link>
+                      </Col>
+                      <Col xs={6}>
+                        <Link to={{pathname:`${this.match.url}/delete-todo/${todo.id}`}}><i className={"fas fa-trash fa-lg"}/></Link>
+                      </Col>
+                    </Row>
+                  </Card.Footer>
                 </Card.Body>
               </Card>
             </li>

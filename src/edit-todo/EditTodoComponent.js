@@ -33,7 +33,7 @@ class NewTodoComponent extends React.Component {
   }
 
   exitTodo = () => {
-    this.history.goBack();
+    this.history.push("/todo-list");
   };
 
 }
