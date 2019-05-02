@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import '../App.css';
-import axios from 'axios';
 import './TodoList.css';
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
@@ -10,19 +9,32 @@ import NewTodoComponent from "../new-todo/NewTodoComponent";
 import EditTodoComponent from "../edit-todo/EditTodoComponent";
 import DeleteTodoComponent from "../delete-todo/DelTodoComponent";
 import Moment from "react-moment";
+import Form from "react-bootstrap/Form";
+import queryString from 'query-string'
+import ServiceTodo from "../shared/ServiceTodo";
 
 
 class TodoList extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {returnedTodo: []};
     this.match = this.props.match;
-    console.log(this.match);
+    this.history = this.props.history;
+    this.location = this.props.location;
+    const queryStringValues = queryString.parse(this.location.search);
+    this.page = queryStringValues.page || 0;
+    this.size = 10;
+    this.serviceTodo = new ServiceTodo();
+    let filterQuery = queryStringValues.contentFilter || "";
+    this.state = {returnedTodo: [], filterQuery: filterQuery};
   };
 
   componentDidMount() {
-    axios.get('/api/v1/todos?contentFilter=blah&page=0&size=10')
+    this.findByFilter();
+  };
+
+  findByFilter = () => {
+    this.serviceTodo.findTodos(this.state.filterQuery, this.page, this.size)
       .then((response) => this.setState({
           returnedTodo: response.data.content
         })
@@ -30,14 +42,33 @@ class TodoList extends Component {
   };
 
 
+  onSearchTodo = (event) => {
+    if(event) {
+      event.preventDefault();
+    }
+    let endpoint = "";
+    if(this.state.filterQuery && this.state.filterQuery.trim() !== "") {
+      endpoint += `contentFilter=${this.state.filterQuery}&`;
+    }
+    endpoint += `page=${this.page}&size=${this.size}`;
+    this.history.push(`/todo-list?${endpoint}`);
+  };
+
+  onChangeFilterValue = (event) => {
+    this.setState({filterQuery: event.target.value});
+  };
+
   render() {
     return (
       <div>
-        <Row>
-          <Col xs={12}>
-            <Link to={{pathname:`${this.match.url}/new-todo`}}><i className={"fas fa-plus-circle fa-lg"}/></Link>
-          </Col>
-        </Row>
+        <Form
+          onSubmit={this.onSearchTodo}
+          noValidate>
+          <Form.Group controlId="formGroupFilter">
+            <Form.Control type="text" placeholder="Text Enter to Filter" value={this.state.filterQuery} onChange={this.onChangeFilterValue}/>
+          </Form.Group>
+          <button type={"submit"}><i className={"fa-search"} style={{fontSize: "2em"}}/></button>
+        </Form>
         <ul className={"cardCollection"}>
           {this.state.returnedTodo.map((todo, index) => {
             return <li key={index}>

@@ -61,7 +61,7 @@ class DeleteTodoComponent extends React.Component {
                     <i className={"far fa-thumbs-up"} style={{fontSize: "2em", color: "green"}}/>
                   </button>
                 </Col>
-                <Col >
+                <Col>
                   <button onClick={this.exitTodo} className={"btn"}>
                     <i className={"far fa-thumbs-down"} style={{fontSize: "2em", color: "red"}}/>
                   </button>
