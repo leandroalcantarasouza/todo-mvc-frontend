@@ -51,7 +51,7 @@ class TodoList extends Component {
       endpoint += `contentFilter=${this.state.filterQuery}&`;
     }
     endpoint += `page=${this.page}&size=${this.size}`;
-    this.history.push(`/todo-list?${endpoint}`);
+    return this.history.push(`/todo-list?${endpoint}`);
   };
 
   onChangeFilterValue = (event) => {
@@ -59,15 +59,27 @@ class TodoList extends Component {
   };
 
   render() {
-    return (
+    return(
       <div>
+        <p/>
         <Form
           onSubmit={this.onSearchTodo}
           noValidate>
-          <Form.Group controlId="formGroupFilter">
-            <Form.Control type="text" placeholder="Text Enter to Filter" value={this.state.filterQuery} onChange={this.onChangeFilterValue}/>
-          </Form.Group>
-          <button type={"submit"}><i className={"fa-search"} style={{fontSize: "2em"}}/></button>
+          <Row>
+            <Col xs={1}>
+              <Link to={{pathname:`${this.match.url}/new-todo`}}><i className={"fas fa-plus-circle fa-lg"} style={{fontSize: "2em"}}/></Link>
+            </Col>
+            <Col xs={11}>
+              <Row>
+                <Col xs={8}>
+                  <Form.Control type="text" placeholder="Text Enter to Filter" value={this.state.filterQuery} onChange={this.onChangeFilterValue}/>
+                </Col>
+                <Col xs={4}>
+                  <button type={"submit"}><i className={"fas fa-search"} style={{fontSize: "2em"}}/></button>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
         </Form>
         <ul className={"cardCollection"}>
           {this.state.returnedTodo.map((todo, index) => {
