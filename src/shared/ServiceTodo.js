@@ -28,7 +28,7 @@ class ServiceTodo {
     if(todoFilterQuery && todoFilterQuery.trim() !== "") {
       endpoint += `contentFilter=${todoFilterQuery}&`;
     }
-    endpoint += `page=${todoPage}&size=${todoPageSize}`;
+    endpoint += `pageSize=${todoPage}`;
 
     return axios.get(endpoint);
   }

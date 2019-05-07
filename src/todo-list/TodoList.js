@@ -54,7 +54,7 @@ class TodoList extends Component {
     if(this.state.filterQuery && this.state.filterQuery.trim() !== "") {
       endpoint += `contentFilter=${this.state.filterQuery}&`;
     }
-    endpoint += `page=${this.page}&size=${this.size}`;
+    endpoint += `pageSize=${this.page}`;
     return this.history.push(`/todo-list?${endpoint}`);
   };
 
