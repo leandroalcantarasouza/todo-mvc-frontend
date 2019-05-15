@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import '../App.css';
 import './TodoList.css';
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";

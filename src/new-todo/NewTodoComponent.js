@@ -4,6 +4,7 @@ import FormTodoComponent from "../shared/FormTodoComponent";
 import TodoDTO from "../shared/TodoDTO";
 import {getOnLocalStorage} from "../shared/LocalStorageService";
 import {FILTER_TODO_LOCAL_STORAGE, PAGE_SIZE_LOCAL_STORAGE} from "../shared/Constants";
+import {toast} from "react-toastify";
 
 
 class NewTodoComponent extends React.Component {
@@ -23,7 +24,10 @@ class NewTodoComponent extends React.Component {
 
   saveTodo(todo) {
     const serviceTodo = new ServiceTodo();
-    serviceTodo.createTodo(todo).then(() => this.exitTodo());
+    serviceTodo.createTodo(todo).then(() => {
+      toast.success("Todo saved Successfully");
+      this.exitTodo()
+    });
   }
 
   exitTodo = () => {

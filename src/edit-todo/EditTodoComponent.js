@@ -4,7 +4,7 @@ import ServiceTodo from "../shared/ServiceTodo";
 import TodoDTO from "../shared/TodoDTO";
 import {getOnLocalStorage} from "../shared/LocalStorageService";
 import {FILTER_TODO_LOCAL_STORAGE, PAGE_SIZE_LOCAL_STORAGE} from "../shared/Constants";
-
+import {toast} from "react-toastify";
 class NewTodoComponent extends React.Component {
 
   constructor({history, match}) {
@@ -31,7 +31,10 @@ class NewTodoComponent extends React.Component {
   }
 
   editTodo(todo) {
-    this.serviceTodo.updateTodo(this.idTodo, todo).then(() => this.exitTodo());
+    this.serviceTodo.updateTodo(this.idTodo, todo).then(() => {
+      toast.success("Todo updated Successfully");
+      this.exitTodo()
+    });
   }
 
   exitTodo = () => {

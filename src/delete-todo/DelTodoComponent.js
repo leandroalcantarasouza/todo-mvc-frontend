@@ -7,6 +7,7 @@ import ServiceTodo from "../shared/ServiceTodo";
 import Moment from "react-moment";
 import {getOnLocalStorage} from "../shared/LocalStorageService";
 import {FILTER_TODO_LOCAL_STORAGE, PAGE_SIZE_LOCAL_STORAGE} from "../shared/Constants";
+import {toast} from "react-toastify";
 
 class DeleteTodoComponent extends React.Component {
 
@@ -93,7 +94,10 @@ class DeleteTodoComponent extends React.Component {
 
   deleteTodo = (idTodo, e) => {
     this.serviceTodo.deleteTodoById(idTodo)
-      .then(this.exitTodo(e));
+      .then(() => {
+        toast.success("Todo deleted Successfully");
+        this.exitTodo(e)
+      });
   }
 }
 
