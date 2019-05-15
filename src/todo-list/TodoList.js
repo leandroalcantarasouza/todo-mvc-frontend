@@ -12,6 +12,8 @@ import Moment from "react-moment";
 import Form from "react-bootstrap/Form";
 import queryString from 'query-string'
 import ServiceTodo from "../shared/ServiceTodo";
+import {FILTER_TODO_LOCAL_STORAGE, PAGE_SIZE_LOCAL_STORAGE} from "../shared/Constants";
+import {setOnLocalStorage} from "../shared/LocalStorageService";
 
 
 class TodoList extends Component {
@@ -45,16 +47,18 @@ class TodoList extends Component {
       );
   };
 
-
   onSearchTodo = (event) => {
     if(event) {
       event.preventDefault();
     }
+
     let endpoint = "";
     if(this.state.filterQuery && this.state.filterQuery.trim() !== "") {
       endpoint += `contentFilter=${this.state.filterQuery}&`;
     }
     endpoint += `pageSize=${this.page}`;
+    setOnLocalStorage(FILTER_TODO_LOCAL_STORAGE, this.state.filterQuery);
+    setOnLocalStorage(PAGE_SIZE_LOCAL_STORAGE, this.page);
     return this.history.push(`/todo-list?${endpoint}`);
   };
 

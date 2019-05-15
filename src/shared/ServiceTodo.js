@@ -1,5 +1,4 @@
 import {createAxiosRequest} from "./DefaultHttpRequestCreator";
-import axios from "axios";
 
 class ServiceTodo {
 
@@ -23,14 +22,24 @@ class ServiceTodo {
     })
   };
 
-  findTodos(todoFilterQuery, todoPage, todoPageSize) {
-    let endpoint = "/api/v1/todos?";
-    if(todoFilterQuery && todoFilterQuery.trim() !== "") {
-      endpoint += `contentFilter=${todoFilterQuery}&`;
-    }
-    endpoint += `pageSize=${todoPage}`;
+  findTodos(todoFilterQuery, pageSize) {
+    let endpoint = "/todos?";
+    endpoint += this.mountTodoListQueryEndpoint(todoFilterQuery, pageSize);
+    // if(todoFilterQuery && todoFilterQuery.trim() !== "") {
+    //   endpoint += `contentFilter=${todoFilterQuery}&`;
+    // }
+    // endpoint += `pageSize=${todoPage}`;
 
-    return axios.get(endpoint);
+    return createAxiosRequest().get(endpoint);
+  }
+
+  mountTodoListQueryEndpoint(contentFilter, pageSize) {
+    let endpoint = "";
+    if (contentFilter && contentFilter.trim() !== "") {
+      endpoint += `contentFilter=${contentFilter}&`;
+    }
+    endpoint += `pageSize=${pageSize}`;
+    return endpoint;
   }
 
 }

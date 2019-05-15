@@ -2,6 +2,8 @@ import React from "react";
 import FormTodoComponent from "../shared/FormTodoComponent";
 import ServiceTodo from "../shared/ServiceTodo";
 import TodoDTO from "../shared/TodoDTO";
+import {getOnLocalStorage} from "../shared/LocalStorageService";
+import {FILTER_TODO_LOCAL_STORAGE, PAGE_SIZE_LOCAL_STORAGE} from "../shared/Constants";
 
 class NewTodoComponent extends React.Component {
 
@@ -33,7 +35,13 @@ class NewTodoComponent extends React.Component {
   }
 
   exitTodo = () => {
-    this.history.push("/todo-list");
+    let filterQuery = getOnLocalStorage(FILTER_TODO_LOCAL_STORAGE);
+    let pageSize = getOnLocalStorage(PAGE_SIZE_LOCAL_STORAGE);
+    let queryParam = "";
+    if(filterQuery && pageSize) {
+      queryParam += this.serviceTodo.mountTodoListQueryEndpoint(filterQuery, pageSize);
+    }
+    this.history.push(`/todo-list?${queryParam}`);
   };
 
 }

@@ -5,7 +5,8 @@ import Row from "react-bootstrap/Row";
 import React from "react";
 import ServiceTodo from "../shared/ServiceTodo";
 import Moment from "react-moment";
-
+import {getOnLocalStorage} from "../shared/LocalStorageService";
+import {FILTER_TODO_LOCAL_STORAGE, PAGE_SIZE_LOCAL_STORAGE} from "../shared/Constants";
 
 class DeleteTodoComponent extends React.Component {
 
@@ -81,7 +82,13 @@ class DeleteTodoComponent extends React.Component {
     if(e) {
       e.preventDefault();
     }
-    this.history.push("/todo-list");
+    let filterQuery = getOnLocalStorage(FILTER_TODO_LOCAL_STORAGE);
+    let pageSize = getOnLocalStorage(PAGE_SIZE_LOCAL_STORAGE);
+    let queryParam = "";
+    if(filterQuery && pageSize) {
+      queryParam += this.serviceTodo.mountTodoListQueryEndpoint(filterQuery, pageSize);
+    }
+    this.history.push(`/todo-list?${queryParam}`);
   };
 
   deleteTodo = (idTodo, e) => {
