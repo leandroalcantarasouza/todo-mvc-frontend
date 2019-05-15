@@ -13,6 +13,7 @@ import queryString from 'query-string'
 import ServiceTodo from "../shared/ServiceTodo";
 import {FILTER_TODO_LOCAL_STORAGE, PAGE_SIZE_LOCAL_STORAGE} from "../shared/Constants";
 import {setOnLocalStorage} from "../shared/LocalStorageService";
+import Button from "react-bootstrap/Button";
 
 
 class TodoList extends Component {
@@ -71,6 +72,7 @@ class TodoList extends Component {
         <p/>
         <Form
           onSubmit={this.onSearchTodo}
+          style={{marginBottom: "1em"}}
           noValidate>
           <Row>
             <Col xs={1}>
@@ -82,46 +84,48 @@ class TodoList extends Component {
                   <Form.Control type="text" placeholder="Text Enter to Filter" value={this.state.filterQuery} onChange={this.onChangeFilterValue}/>
                 </Col>
                 <Col xs={4}>
-                  <button type={"submit"}><i className={"fas fa-search"} style={{fontSize: "2em"}}/></button>
+                  <Button ts="input" type="submit" variant="link" className={"btn btn-link"}><i className={"fas fa-search fa-lg"} style={{fontSize: "2em"}}/></Button>
                 </Col>
               </Row>
             </Col>
           </Row>
         </Form>
-        <ul className={"cardCollection"}>
-          {this.state.returnedTodo.map((todo, index) => {
-            return <li key={index}>
-              <Card bg="info" text="white" style={{width: '18rem'}}>
-                <Card.Body>
-                  <Row>
-                    <Col>
-                      <Card.Text style={{align: "center"}}>
-                        {todo.content}
-                      </Card.Text>
-                    </Col>
-                    <Col>
-                      <Card.Text>
-                        <Moment format="DD/MM/YYYY">{todo.lastUpdateDate}</Moment>
-                      </Card.Text>
-                    </Col>
-                  </Row>
-                  <Card.Footer className={"bg-none"}>
+        <Row>
+          <ul className={"cardCollection"}>
+            {this.state.returnedTodo.map((todo, index) => {
+              return <li key={index}>
+                <Card bg="info" text="white" style={{width: '18rem'}}>
+                  <Card.Body>
                     <Row>
-                      <Col xs={6}>
-                        <Link to={{pathname:`${this.match.url}/edit-todo/${todo.id}`}}><i className={"fas fa-pen fa-lg"}/></Link>
+                      <Col>
+                        <Card.Text style={{align: "center"}}>
+                          {todo.content}
+                        </Card.Text>
                       </Col>
-                      <Col xs={6}>
-                        <Link to={{pathname:`${this.match.url}/delete-todo/${todo.id}`}}><i className={"fas fa-trash fa-lg"}/></Link>
+                      <Col>
+                        <Card.Text>
+                          <Moment format="DD/MM/YYYY">{todo.lastUpdateDate}</Moment>
+                        </Card.Text>
                       </Col>
                     </Row>
-                  </Card.Footer>
-                </Card.Body>
-              </Card>
-            </li>
-          })
-          }
-        </ul>
+                    <Card.Footer className={"bg-none"}>
+                      <Row>
+                        <Col xs={6}>
+                          <Link to={{pathname:`${this.match.url}/edit-todo/${todo.id}`}}><i className={"fas fa-pen fa-lg"}/></Link>
+                        </Col>
+                        <Col xs={6}>
+                          <Link to={{pathname:`${this.match.url}/delete-todo/${todo.id}`}}><i className={"fas fa-trash fa-lg"}/></Link>
+                        </Col>
+                      </Row>
+                    </Card.Footer>
+                  </Card.Body>
+                </Card>
+              </li>
+            })
+            }
+          </ul>
 
+        </Row>
         <Route path={`${this.match.url}/new-todo`} component={NewTodoComponent}/>
         <Route path={`${this.match.url}/edit-todo/:idTodo`} component={EditTodoComponent}/>
         <Route path={`${this.match.url}/delete-todo/:idTodo`} component={DeleteTodoComponent}/>
