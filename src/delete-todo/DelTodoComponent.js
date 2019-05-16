@@ -33,6 +33,13 @@ class DeleteTodoComponent extends React.Component {
       font-size: 2em
       color: red
     `;
+    
+    /*
+    const StyledModalTitle = styled(Modal.Title)`
+    color #fff
+    `;
+    */
+    //<StyledModalTitle className={"font-weight-light text-capitalize"}>Are You Sure You Want to Delete Todo ?</StyledModalTitle>
 
     let delForm = "";
     const todo = this.state.todo;
