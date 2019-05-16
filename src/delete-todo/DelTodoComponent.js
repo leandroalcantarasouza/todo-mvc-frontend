@@ -8,6 +8,8 @@ import Moment from "react-moment";
 import {getOnLocalStorage} from "../shared/LocalStorageService";
 import {FILTER_TODO_LOCAL_STORAGE, PAGE_SIZE_LOCAL_STORAGE} from "../shared/Constants";
 import {toast} from "react-toastify";
+import styled from 'styled-components'
+import Button from "react-bootstrap/Button";
 
 class DeleteTodoComponent extends React.Component {
 
@@ -21,6 +23,17 @@ class DeleteTodoComponent extends React.Component {
   }
 
   render() {
+
+    const ThumbUp = styled.i`
+      font-size: 2em
+      color: green
+    `;
+
+    const ThumbDown = styled.i`
+      font-size: 2em
+      color: red
+    `;
+
     let delForm = "";
     const todo = this.state.todo;
     if(todo) {
@@ -59,14 +72,14 @@ class DeleteTodoComponent extends React.Component {
             <Modal.Footer style={{justifyContent: "flex-start"}}>
               <Row>
                 <Col>
-                  <button onClick={() => this.deleteTodo(this.idTodo, event)} className={"btn"}>
-                    <i className={"far fa-thumbs-up"} style={{fontSize: "2em", color: "green"}}/>
-                  </button>
+                  <Button variant="link" onClick={() => this.deleteTodo(this.idTodo, event)}>
+                    <ThumbUp className={"far fa-thumbs-up"}/>
+                  </Button>
                 </Col>
                 <Col>
-                  <button onClick={this.exitTodo} className={"btn"}>
-                    <i className={"far fa-thumbs-down"} style={{fontSize: "2em", color: "red"}}/>
-                  </button>
+                  <Button variant="link" onClick={this.exitTodo}>
+                    <ThumbDown className={"far fa-thumbs-down"}/>
+                  </Button>
                 </Col>
               </Row>
             </Modal.Footer>

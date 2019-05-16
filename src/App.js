@@ -6,6 +6,7 @@ import TodoList from "./todo-list/TodoList";
 import {ToastContainer} from "react-toastify";
 import Container from "react-bootstrap/Container";
 import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
 
 function App() {
   return (

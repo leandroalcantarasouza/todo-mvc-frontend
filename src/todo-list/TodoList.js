@@ -14,6 +14,7 @@ import ServiceTodo from "../shared/ServiceTodo";
 import {FILTER_TODO_LOCAL_STORAGE, PAGE_SIZE_LOCAL_STORAGE} from "../shared/Constants";
 import {setOnLocalStorage} from "../shared/LocalStorageService";
 import Button from "react-bootstrap/Button";
+import CardColumns from "react-bootstrap/CardColumns";
 
 
 class TodoList extends Component {
@@ -25,7 +26,6 @@ class TodoList extends Component {
     this.location = this.props.location;
     const queryStringValues = queryString.parse(this.location.search);
     this.page = queryStringValues.page || 0;
-    this.size = 10;
     this.serviceTodo = new ServiceTodo();
     let filterQuery = queryStringValues.contentFilter || "";
     this.state = {returnedTodo: [], filterQuery: filterQuery};
@@ -40,7 +40,7 @@ class TodoList extends Component {
   };
 
   findByFilter = () => {
-    this.serviceTodo.findTodos(this.state.filterQuery, this.page, this.size)
+    this.serviceTodo.findTodos(this.state.filterQuery, this.page)
       .then((response) => this.setState({
           returnedTodo: response.data.content
         })
@@ -48,15 +48,16 @@ class TodoList extends Component {
   };
 
   onSearchTodo = (event) => {
-    if(event) {
+    if (event) {
       event.preventDefault();
     }
 
     let endpoint = "";
-    if(this.state.filterQuery && this.state.filterQuery.trim() !== "") {
-      endpoint += `contentFilter=${this.state.filterQuery}&`;
-    }
-    endpoint += `pageSize=${this.page}`;
+    endpoint += this.serviceTodo.mountTodoListQueryEndpoint(this.state.filterQuery, this.page);
+    // if(this.state.filterQuery && this.state.filterQuery.trim() !== "") {
+    //   endpoint += `contentFilter=${this.state.filterQuery}&`;
+    // }
+    // endpoint += `pageSize=${this.page}`;
     setOnLocalStorage(FILTER_TODO_LOCAL_STORAGE, this.state.filterQuery);
     setOnLocalStorage(PAGE_SIZE_LOCAL_STORAGE, this.page);
     return this.history.push(`/todo-list?${endpoint}`);
@@ -67,7 +68,7 @@ class TodoList extends Component {
   };
 
   render() {
-    return(
+    return (
       <div>
         <p/>
         <Form
@@ -76,56 +77,56 @@ class TodoList extends Component {
           noValidate>
           <Row>
             <Col xs={1}>
-              <Link to={{pathname:`${this.match.url}/new-todo`}}><i className={"fas fa-plus-circle fa-lg"} style={{fontSize: "2em"}}/></Link>
+              <Link to={{pathname: `${this.match.url}/new-todo`}}><i className={"fas fa-plus-circle fa-lg"}
+                                                                     style={{fontSize: "2em"}}/></Link>
             </Col>
             <Col xs={11}>
               <Row>
                 <Col xs={8}>
-                  <Form.Control type="text" placeholder="Text Enter to Filter" value={this.state.filterQuery} onChange={this.onChangeFilterValue}/>
+                  <Form.Control type="text" placeholder="Text Enter to Filter" value={this.state.filterQuery}
+                                onChange={this.onChangeFilterValue}/>
                 </Col>
                 <Col xs={4}>
-                  <Button ts="input" type="submit" variant="link" className={"btn btn-link"}><i className={"fas fa-search fa-lg"} style={{fontSize: "2em"}}/></Button>
+                  <Button ts="input" type="submit" variant="link" className={"btn btn-link"}><i
+                    className={"fas fa-search fa-lg"} style={{fontSize: "2em"}}/></Button>
                 </Col>
               </Row>
             </Col>
           </Row>
         </Form>
-        <Row>
-          <ul className={"cardCollection"}>
-            {this.state.returnedTodo.map((todo, index) => {
-              return <li key={index}>
-                <Card bg="info" text="white" style={{width: '18rem'}}>
+        <div className="row">
+          {this.state.returnedTodo.map((todo, index) => {
+            return <div className="col-sm-2">
+              <div className="card-deck" style={{marginBottom: '15px'}}>
+                <Card style={{width: '19em', height: '12em'}}>
                   <Card.Body>
-                    <Row>
-                      <Col>
-                        <Card.Text style={{align: "center"}}>
-                          {todo.content}
-                        </Card.Text>
-                      </Col>
-                      <Col>
-                        <Card.Text>
-                          <Moment format="DD/MM/YYYY">{todo.lastUpdateDate}</Moment>
-                        </Card.Text>
-                      </Col>
-                    </Row>
-                    <Card.Footer className={"bg-none"}>
+                    <Card.Text className={"text-info text-center"}>
+                        {todo.content}
+                    </Card.Text>
+                    <Card.Text className={"text-info text-center"}>
+                      <div className={"text-center"}>
+                        <Moment format="DD/MM/YYYY">{todo.lastUpdateDate}</Moment>
+                      </div>
+                    </Card.Text>
+                    <Card.Footer style={{backgroundColor: "transparent", borderTop: "0px"}}>
                       <Row>
-                        <Col xs={6}>
-                          <Link to={{pathname:`${this.match.url}/edit-todo/${todo.id}`}}><i className={"fas fa-pen fa-lg"}/></Link>
+                        <Col>
+                          <Link to={{pathname: `${this.match.url}/edit-todo/${todo.id}`}}><i
+                            className={"fas fa-pen fa-lg"} style={{fontSize: '1.5em'}}/></Link>
                         </Col>
-                        <Col xs={6}>
-                          <Link to={{pathname:`${this.match.url}/delete-todo/${todo.id}`}}><i className={"fas fa-trash fa-lg"}/></Link>
+                        <Col>
+                          <Link to={{pathname: `${this.match.url}/delete-todo/${todo.id}`}}><i
+                            className={"fas fa-trash fa-lg"} style={{fontSize: '1.5em'}}/></Link>
                         </Col>
                       </Row>
                     </Card.Footer>
                   </Card.Body>
                 </Card>
-              </li>
-            })
-            }
-          </ul>
-
-        </Row>
+              </div>
+            </div>
+          })
+          }
+        </div>
         <Route path={`${this.match.url}/new-todo`} component={NewTodoComponent}/>
         <Route path={`${this.match.url}/edit-todo/:idTodo`} component={EditTodoComponent}/>
         <Route path={`${this.match.url}/delete-todo/:idTodo`} component={DeleteTodoComponent}/>
@@ -133,7 +134,6 @@ class TodoList extends Component {
     );
   }
 }
-
 
 
 export default TodoList;

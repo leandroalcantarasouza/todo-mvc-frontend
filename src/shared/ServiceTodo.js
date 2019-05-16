@@ -25,11 +25,6 @@ class ServiceTodo {
   findTodos(todoFilterQuery, pageSize) {
     let endpoint = "/todos?";
     endpoint += this.mountTodoListQueryEndpoint(todoFilterQuery, pageSize);
-    // if(todoFilterQuery && todoFilterQuery.trim() !== "") {
-    //   endpoint += `contentFilter=${todoFilterQuery}&`;
-    // }
-    // endpoint += `pageSize=${todoPage}`;
-
     return createAxiosRequest().get(endpoint);
   }
 

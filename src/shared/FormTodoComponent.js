@@ -4,6 +4,7 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
+import Button from "react-bootstrap/Button";
 
 class FormTodoComponent extends Component {
 
@@ -81,14 +82,14 @@ class FormTodoComponent extends Component {
             <Modal.Footer style={{justifyContent: "flex-start"}}>
               <Row>
                 <Col>
-                  <button disabled={this.state.disabled} type={"submit"} className={"btn"}>
+                  <Button variant={"link"} disabled={this.state.disabled} type={"submit"}>
                     <i className={"far fa-thumbs-up"} style={{fontSize: "2em", color: "green"}}/>
-                  </button>
+                  </Button>
                 </Col>
                 <Col >
-                  <button onClick={this.back} className={"btn"}>
+                  <Button variant={"link"} onClick={this.back}>
                     <i className={"far fa-thumbs-down"} style={{fontSize: "2em", color: "red"}}/>
-                  </button>
+                  </Button>
                 </Col>
               </Row>
             </Modal.Footer>
