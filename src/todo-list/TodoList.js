@@ -77,8 +77,7 @@ class TodoList extends Component {
           noValidate>
           <Row>
             <Col xs={1}>
-              <Link to={{pathname: `${this.match.url}/new-todo`}}><i className={"fas fa-plus-circle fa-lg"}
-                                                                     style={{fontSize: "2em"}}/></Link>
+              <Link to={{pathname: `${this.match.url}/new-todo`}}><i className={"fas fa-plus-circle fa-lg"} style={{fontSize: "2em"}}/></Link>
             </Col>
             <Col xs={11}>
               <Row>
@@ -86,7 +85,7 @@ class TodoList extends Component {
                   <Form.Control type="text" placeholder="Text Enter to Filter" value={this.state.filterQuery}
                                 onChange={this.onChangeFilterValue}/>
                 </Col>
-                <Col xs={4}>
+                <Col xs={3}>
                   <Button ts="input" type="submit" variant="link" className={"btn btn-link"}><i
                     className={"fas fa-search fa-lg"} style={{fontSize: "2em"}}/></Button>
                 </Col>
@@ -96,7 +95,7 @@ class TodoList extends Component {
         </Form>
         <div className="row">
           {this.state.returnedTodo.map((todo, index) => {
-            return <div className="col-sm-2">
+            return <Col style={{paddingRight : "5px"}}>
               <div className="card-deck" style={{marginBottom: '15px'}}>
                 <Card style={{width: '19em', height: '12em'}}>
                   <Card.Body>
@@ -108,22 +107,26 @@ class TodoList extends Component {
                         <Moment format="DD/MM/YYYY">{todo.lastUpdateDate}</Moment>
                       </div>
                     </Card.Text>
-                    <Card.Footer style={{backgroundColor: "transparent", borderTop: "0px"}}>
-                      <Row>
-                        <Col>
-                          <Link to={{pathname: `${this.match.url}/edit-todo/${todo.id}`}}><i
-                            className={"fas fa-pen fa-lg"} style={{fontSize: '1.5em'}}/></Link>
-                        </Col>
-                        <Col>
-                          <Link to={{pathname: `${this.match.url}/delete-todo/${todo.id}`}}><i
-                            className={"fas fa-trash fa-lg"} style={{fontSize: '1.5em'}}/></Link>
-                        </Col>
-                      </Row>
+                    <Card.Footer style={{backgroundColor: "transparent", borderTop: "0px", width: "100%", position: "absolute", bottom: "0"}}>
+                        <Row>
+                          <Col>
+                            <Link to={{pathname: `${this.match.url}/edit-todo/${todo.id}`}}>
+                              <i
+                              className={"fas fa-pen fa-lg"} style={{fontSize: '1.7em', color: "green"}}/>
+                            </Link>
+                          </Col>
+                          <Col>
+                            <Link to={{pathname: `${this.match.url}/delete-todo/${todo.id}`}}>
+                              <i
+                              className={"fas fa-trash fa-lg"} style={{fontSize: '1.7em', color: "red"}}/>
+                            </Link>
+                          </Col>
+                        </Row>
                     </Card.Footer>
                   </Card.Body>
                 </Card>
               </div>
-            </div>
+            </Col>
           })
           }
         </div>
