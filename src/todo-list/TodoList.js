@@ -11,10 +11,10 @@ import Moment from "react-moment";
 import Form from "react-bootstrap/Form";
 import queryString from 'query-string'
 import ServiceTodo from "../shared/ServiceTodo";
-import {FILTER_TODO_LOCAL_STORAGE, PAGE_SIZE_LOCAL_STORAGE} from "../shared/Constants";
+import {FILTER_TODO_LOCAL_STORAGE} from "../shared/Constants";
 import {setOnLocalStorage} from "../shared/LocalStorageService";
 import Button from "react-bootstrap/Button";
-import CardColumns from "react-bootstrap/CardColumns";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 
 class TodoList extends Component {
@@ -25,10 +25,9 @@ class TodoList extends Component {
     this.history = this.props.history;
     this.location = this.props.location;
     const queryStringValues = queryString.parse(this.location.search);
-    this.page = queryStringValues.page || 0;
     this.serviceTodo = new ServiceTodo();
     let filterQuery = queryStringValues.contentFilter || "";
-    this.state = {returnedTodo: [], filterQuery: filterQuery};
+    this.state = {returnedTodo: {content: []}, filterQuery: filterQuery, last: false, page:-1};
   };
 
   componentDidMount() {
@@ -36,15 +35,31 @@ class TodoList extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    let queryStringValues = queryString.parse(nextProps.location.search);
+    let filterQuery = queryStringValues.contentFilter || "";
+    this.setState({returnedTodo: {content: []}});
+    this.setState({filterQuery: filterQuery});
+    this.setState({last: false});
+    this.setState({page: -1});
     this.findByFilter();
   };
 
   findByFilter = () => {
-    this.serviceTodo.findTodos(this.state.filterQuery, this.page)
-      .then((response) => this.setState({
-          returnedTodo: response.data.content
-        })
-      );
+    console.log("Chegou");
+    if(!this.state.last) {
+      this.serviceTodo.findTodos(this.state.filterQuery, ++this.state.page).then((response) => {
+          let content = [...this.state.returnedTodo.content, ...response.data.content];
+          let returnedTodo = response.data;
+          returnedTodo.content = content;
+            this.setState({returnedTodo: returnedTodo});
+            if(response.data.last) {
+              this.setState({last: true});
+            } else {
+              this.setState({last: false});
+            }
+            this.setState({page: response.data.number});
+        });
+    }
   };
 
   onSearchTodo = (event) => {
@@ -53,13 +68,8 @@ class TodoList extends Component {
     }
 
     let endpoint = "";
-    endpoint += this.serviceTodo.mountTodoListQueryEndpoint(this.state.filterQuery, this.page);
-    // if(this.state.filterQuery && this.state.filterQuery.trim() !== "") {
-    //   endpoint += `contentFilter=${this.state.filterQuery}&`;
-    // }
-    // endpoint += `pageSize=${this.page}`;
+    endpoint += this.serviceTodo.mountTodoListQueryEndpoint(this.state.filterQuery, 0);
     setOnLocalStorage(FILTER_TODO_LOCAL_STORAGE, this.state.filterQuery);
-    setOnLocalStorage(PAGE_SIZE_LOCAL_STORAGE, this.page);
     return this.history.push(`/todo-list?${endpoint}`);
   };
 
@@ -94,7 +104,18 @@ class TodoList extends Component {
           </Row>
         </Form>
         <div className="row">
-          {this.state.returnedTodo.map((todo, index) => {
+          <InfiniteScroll
+            dataLength={this.state.returnedTodo.content.length}
+            next={this.findByFilter}
+            hasMore={!this.state.last}
+            loader={<h4>Loading...</h4>}
+            endMessage={
+              <p style={{ textAlign: "center" }}>
+                <b>Yay! You have seen it all</b>
+              </p>
+            }
+          >
+          {this.state.returnedTodo.content.map((todo, index) => {
             return <Col style={{paddingRight : "5px"}}>
               <div className="card-deck" style={{marginBottom: '15px'}}>
                 <Card style={{width: '19em', height: '12em'}}>
@@ -129,6 +150,7 @@ class TodoList extends Component {
             </Col>
           })
           }
+          </InfiniteScroll>
         </div>
         <Route path={`${this.match.url}/new-todo`} component={NewTodoComponent}/>
         <Route path={`${this.match.url}/edit-todo/:idTodo`} component={EditTodoComponent}/>

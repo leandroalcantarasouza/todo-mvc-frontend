@@ -72,7 +72,7 @@ class DeleteTodoComponent extends React.Component {
             <Modal.Footer style={{justifyContent: "flex-start"}}>
               <Row>
                 <Col>
-                  <Button variant="link" onClick={() => this.deleteTodo(this.idTodo, event)}>
+                  <Button variant="link" onClick={() => this.deleteTodo(this.idTodo)}>
                     <ThumbUp className={"far fa-thumbs-up"}/>
                   </Button>
                 </Col>
@@ -105,11 +105,11 @@ class DeleteTodoComponent extends React.Component {
     this.history.push(`/todo-list?${queryParam}`);
   };
 
-  deleteTodo = (idTodo, e) => {
+  deleteTodo = (idTodo) => {
     this.serviceTodo.deleteTodoById(idTodo)
       .then(() => {
         toast.success("Todo deleted Successfully");
-        this.exitTodo(e)
+        this.exitTodo()
       });
   }
 }
